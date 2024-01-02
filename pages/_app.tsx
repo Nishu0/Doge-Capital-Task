@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import "./globals.css";
 import type { AppProps } from "next/app";
 import Layout from "../components/Layout";
+import { ThemeProvider } from "next-themes"
 import {
   ConnectionProvider,
   WalletProvider,
@@ -27,6 +28,7 @@ export default function App({ Component, pageProps }: AppProps) {
   );
 
   return (
+    <ThemeProvider attribute="class">
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
         <WalletModalProvider>
@@ -36,5 +38,6 @@ export default function App({ Component, pageProps }: AppProps) {
         </WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
+    </ThemeProvider>
   );
 }
