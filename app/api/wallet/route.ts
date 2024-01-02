@@ -15,33 +15,21 @@ export async function GET() {
     return NextResponse.json(data)
 }
 
-export async function POST(req: NextApiRequest, res: NextApiResponse){
-    await connect();
-    const walletAddress = new WalletAddress({
-      walletAddress: req.body.walletAddress,
-    });
-    try {
-        const result = await walletAddress.save();
-        console.log(result);  
-      } catch (error) {
-        console.log(error);
-      }
-}
-
-
-// export async function POST(req: NextApiRequest, res: NextApiResponse){
-//   const walletAddress = new WalletAddress({
-//     _id: new mongoose.Types.ObjectId(),
-//     walletAddress: (req as unknown as NextApiRequest).body.walletAddress,
-//   });
-//   walletAddress
-//     .save()
-//     .then((walletAddress) => {
-//       res.status(200).json(walletAddress);
-//     })
-//     .catch((error) => {
-//       res.status(500).json({
-//         error: error,
-//       });
+// interface ExtendedNextApiRequest extends NextApiRequest {
+//     body: {
+//         walletAddress: string;
+//     };
+// }
+// export async function POST(req: ExtendedNextApiRequest, res: NextApiResponse){
+//     await connect();
+//     const walletAddress = new WalletAddress({
+//       walletAddress: req.body.walletAddress,
 //     });
-//   }
+//     try {
+//         const result = await walletAddress.save();
+//         console.log(result);  
+//       } catch (error) {
+//         console.log(error);
+//       }
+// }
+
