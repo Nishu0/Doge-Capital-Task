@@ -17,6 +17,8 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Home() {
   const wallet = useWallet();
   const [file, setFile] = useState(null);
+  const [nftName, setNFTName] = useState<string>("");
+  const [nftDescription, setNFTDescription] = useState<string>("");
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -25,7 +27,7 @@ export default function Home() {
 
   const mintNFT = async () => {
     if (!file || !wallet.connected || !wallet.publicKey) {
-      toast.error("Pls Connect Wallet.");
+      toast.error("Pls connect wallet and select a file.");
       return;
     }
 
@@ -57,21 +59,40 @@ export default function Home() {
       console.log("Upload Response:", uploadResponse);
 
       const { uri } = await metaplex.nfts().uploadMetadata({
-        name: "NFT Collection",
-        description: "Test Description",
+        nftName,
+        nftDescription,
         file,
         attributes: [
           { trait_type: "Color", value: "Blue" },
           { trait_type: "Size", value: "Large" },
         ],
       });
+
+      const { nft } = await metaplex.nfts().create(
+        {
+          uri,
+          name: nftName,
+          sellerFeeBasisPoints: 500,
+        },
+        {
+          commitment: "finalized",
+          confirmOptions: {
+            commitment: "finalized",
+            skipPreflight: false,
+            maxRetries: 3,
+          },
+        }
+      );
+
+      console.log("NFT Minted:", nft);
+      toast.success("NFT Minted Successfully!");
     } catch (error) {
       console.error("Error minting NFT:", error);
       toast.success("NFT Minted Successfully!");
     }
   };
   return (
-    <div className="block max-w-lg p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+    <div className="block max-w-lg p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
     <main className="flex flex-col gap-8 ">
       <PageHeading>Mint NFT based on Solana</PageHeading>
 
@@ -97,12 +118,28 @@ export default function Home() {
             onChange={handleFileChange}
             className="hidden"
           />
+          <input
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          type="text"
+          placeholder="NFT Name"
+          value={nftName}
+          onChange={(e) => setNFTName(e.target.value)}
+        />
+        <input
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          type="text"
+          placeholder="NFT Description"
+          value={nftDescription}
+          onChange={(e) => setNFTDescription(e.target.value)}
+        />
         </div>
 
         {file && (
           <div className="flex flex-col gap-10 justify-center">
             <p className="text-sm text-white my-10">
-              Nft Minting from Wallet Address: {wallet.publicKey.toBase58()}
+              {wallet.publicKey && (
+                <p>Nft Minting from Wallet Address: {wallet.publicKey.toBase58()}</p>
+              )}
             </p>
             <img src={URL.createObjectURL(file)} />
             <p className="text-sm text-white">

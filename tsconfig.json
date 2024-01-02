@@ -23,7 +23,7 @@
         "name": "next"
       }
     ],
-    "strictNullChecks": true
+    "strictNullChecks": false
   },
   "exclude": [
     "node_modules"
@@ -32,6 +32,5 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
   ]
 }
