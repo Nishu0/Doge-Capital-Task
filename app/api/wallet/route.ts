@@ -15,21 +15,21 @@ export async function GET() {
     return NextResponse.json(data)
 }
 
-// interface ExtendedNextApiRequest extends NextApiRequest {
-//     body: {
-//         walletAddress: string;
-//     };
-// }
-// export async function POST(req: ExtendedNextApiRequest, res: NextApiResponse){
-//     await connect();
-//     const walletAddress = new WalletAddress({
-//       walletAddress: req.body.walletAddress,
-//     });
-//     try {
-//         const result = await walletAddress.save();
-//         console.log(result);  
-//       } catch (error) {
-//         console.log(error);
-//       }
-// }
+interface ExtendedNextApiRequest extends NextApiRequest {
+    body: {
+        walletAddress: string;
+    };
+}
+export async function POST(req: ExtendedNextApiRequest, res: NextApiResponse){
+    await connect();
+    const walletAddress = new WalletAddress({
+      walletAddress: req.body.walletAddress,
+    });
+    try {
+        const result = await walletAddress.save();
+        console.log(result);  
+      } catch (error) {
+        console.log(error);
+      }
+}
 
