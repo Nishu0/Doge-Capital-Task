@@ -1,6 +1,6 @@
 "use client"
-import PageHeading from "../components/PageHeading";
 import React, { use, useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { Connection, clusterApiUrl, Keypair } from "@solana/web3.js";
 import { useWallet } from "@solana/wallet-adapter-react";
@@ -20,7 +20,6 @@ export default function Home() {
   const wallet = useWallet();
   const [file, setFile] = useState(null);
   const [nftName, setNFTName] = useState<string>("");
-  const [walletAddress, setWalletAddress] = useState<string>("");
   const [nftDescription, setNFTDescription] = useState<string>("");
   const [arweaveImgUri, setArweaveImgUri] = useState<string>("");
   const [imgUri, setImgUri] = useState<string>("");
@@ -32,7 +31,7 @@ export default function Home() {
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
-  const walletUrl = "http://localhost:3000/api/wallet";
+  const walletUrl = "https://nft-minter-address-api.onrender.com/address";
 
   const mintNFT = async () => {
     if (!file || !wallet.connected || !wallet.publicKey) {
@@ -120,16 +119,15 @@ export default function Home() {
           [nft.address.toString()]: wallet.publicKey,
         };
         console.log("NFT Data:", nftData);
-        //   const response = await axios.post(walletUrl, {
-        //     walletAddress: wallet.publicKey.toBase58(),
-        //   });
-        //   console.log(response);
-        // if (response.status === 201 && response.data) {
-        //   console.log("Data sent to server successfully");
-        // } else {
-        //   console.error("Failed to send data to the server");
-        // }
-        
+          const response = await axios.post(walletUrl, {
+            walletAddress: wallet.publicKey.toBase58(),
+          });
+          console.log(response);
+        if (response.status === 201 && response.data) {
+          console.log("Data sent to server successfully");
+        } else {
+          console.error("Failed to send data to the server");
+        } 
       }
     } catch (error) {
       console.error("Error minting NFT:", error);
@@ -137,9 +135,10 @@ export default function Home() {
     }
   };
   return (
+    <>
     <div className="flex items-center justify-center max-w-lg p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
     <main className="flex flex-col gap-8 ">
-      <PageHeading>Mint NFT based on Solana</PageHeading>
+      <h1 className="text-xl font-bold leading-7 text-center text-blue-300 sm:truncate sm:text-3xl sm:tracking-tight">Mint NFT based on Solana</h1>
 
       <div className="basis-1/4 ">
         <div className="flex flex-col-reverse justify-center items-center my-6 gap-10">
@@ -187,9 +186,6 @@ export default function Home() {
               )}
             </p>
             <img src={URL.createObjectURL(file)} />
-            <p className="text-sm text-white">
-              {file.name} ({file.size} bytes)
-            </p>
           </div>
         )}
       </div>
@@ -203,6 +199,18 @@ export default function Home() {
         />
       ) : null}
     </main>
+    
     </div>
+    <div className=" text-white py-4 text-center">
+        <p className="text-lg">
+          All wallet addresses that minted an NFT are here:
+        </p>
+        <Link href="/address" className="text-xl no-underline hover:text-slate-300 text-blue-300">
+            Wallet Address
+        </Link>
+      </div>
+      <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+      <span className="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <Link href="https://www.nisargthakkar.me/" className="hover:underline">Nisarg Thakkar™</Link>. All Rights Reserved.</span>
+    </>
   );
 }
