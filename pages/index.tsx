@@ -201,7 +201,7 @@ export default function Home() {
     </main>
     
     </div>
-    <div className=" text-white py-4 text-center">
+    <div className="text-blue py-4 text-center ">
         <p className="text-lg">
           All wallet addresses that minted an NFT are here:
         </p>

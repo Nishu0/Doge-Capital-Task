@@ -9,7 +9,7 @@ export default function Navbar() {
     { ssr: false }
   );
   return (
-    <nav className="flex w-full justify-between h-10 gap-4 pt-4 pb-20 font-sans text-white md:px-20 md:gap-10">
+    <nav className="flex w-full justify-between h-10 gap-4 pt-4 pb-20 font-sans text-zinc-900 md:px-20 md:gap-10">
       
       <div className="flex flex-row gap-20">
         <Link
@@ -18,9 +18,10 @@ export default function Navbar() {
         >
           <span className="text-blue-300">NFT Minter</span>
         </Link>
+      
       </div>
 
-      <WalletMultiButtonDynamic className="bg-blue-900" />
+      <WalletMultiButtonDynamic className="bg-blue-900 text-blue" />
       <ThemeToggle />
     </nav>
   );
