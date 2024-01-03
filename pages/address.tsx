@@ -1,7 +1,7 @@
-import React, { FC, useState, useEffect, use } from "react";
+import React, { FC, useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
-const wallet: FC = () => {
+const Wallet: FC = () => {
   const [walletAddress, setWalletAddress] = useState([]);
   const walletUrl = "https://nft-minter-address-api.onrender.com/address";
   useEffect(() => {
@@ -53,4 +53,4 @@ const wallet: FC = () => {
   );
 };
 
-export default wallet;
+export default Wallet;
