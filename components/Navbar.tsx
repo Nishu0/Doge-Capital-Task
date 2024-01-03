@@ -20,8 +20,10 @@ export default function Navbar() {
         </Link>
       
       </div>
+      <div className="bg-blue-800">
+      <WalletMultiButtonDynamic />
 
-      <WalletMultiButtonDynamic className="bg-blue-900 text-blue" />
+      </div>
       <ThemeToggle />
     </nav>
   );
